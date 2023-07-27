@@ -3,10 +3,9 @@ const cors = require("cors");
 const app = express();
 const port = 9000;
 const routes = require("./routes");
-const conn = require("./config/connection");
+const open_connection = require("./config/connection");
 
-// check db
-conn;
+open_connection; // create connection to mongodb
 app.use(cors());
 app.use(routes);
 
