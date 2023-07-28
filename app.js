@@ -7,6 +7,7 @@ const open_connection = require("./config/connection");
 
 open_connection; // create connection to mongodb
 app.use(cors());
+app.use(express.json());
 app.use(routes);
 
 app.listen(port, () => {
