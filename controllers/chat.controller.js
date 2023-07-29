@@ -19,6 +19,24 @@ function validateRoom(room) {
   return validate(room, constraints);
 }
 
+function validateMessage(message) {
+  const constraints = {
+    sender: {
+      presence: true,
+      type: "string",
+    },
+    message: {
+      presence: true,
+      type: "string",
+    },
+    room: {
+      presence: true,
+      type: "string",
+    },
+  };
+  return validate(message, constraints);
+}
+
 module.exports = {
   // newChat: async (req, res) => {
   //   try {
@@ -49,6 +67,20 @@ module.exports = {
       const room = new Room({ psikolog: psikolog._id, pasien: pasien._id });
       await room.save();
       response(res, 200, "success", room);
+    } catch (error) {
+      response(res, 500, "failed", error.message);
+    }
+  },
+  sendChat: async (req, res) => {
+    try {
+      let error = validateMessage(req.body);
+      if (error) {
+        response(res, 400, "bad request", error);
+        return;
+      }
+      const message = new Message({ ...req.body, timestamp: new Date() });
+      await message.save();
+      response(res, 200, "success", message);
     } catch (error) {
       response(res, 500, "failed", error.message);
     }
